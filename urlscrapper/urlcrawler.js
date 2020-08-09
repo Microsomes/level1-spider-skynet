@@ -63,6 +63,9 @@ async function scrapeUrls(url) {
   return new Promise(async (resolve, reject) => {
     try{
     const browser = await puppeteer.launch({ headless: true });
+    // const browser= await puppeteer.connect({
+    //   browserWSEndpoint:"wss://chrome.browserless.io/",
+    // })
     const page = await browser.newPage();
     await page.goto(url);
     await page.waitFor(3000);

@@ -1,6 +1,22 @@
 {
   "apps": [
     {
+      "name": "Clean up Results",
+      "script": "processURLs.js",
+      "args": [],
+      "node_args": "--harmony",
+      "merge_logs": true,
+      "instances": 1,
+      "exec_mode": "fork",
+      "cron_restart": "00 59 * * * *",
+      "watch": false,
+      "autorestart": false,
+      "cwd": "../process/",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    {
       "name": "Scrape Liveuamap-ALL",
       "script": "urlcrawler.js",
       "args": [
