@@ -42,6 +42,8 @@ if(name==undefined){
   fs.writeFile(`results/${name}/urls_${unix}.json`, JSON.stringify(completedData, null, 2), (err) => { });
 }catch(e){
   console.log("something went wrong ill write a log on "+name);
+
+  console.log(e);
 }
 })()
 
