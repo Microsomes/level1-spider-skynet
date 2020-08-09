@@ -1,0 +1,3 @@
+node urlcrawler.js --name=liveuamap --url=https://liveuamap.com/ 
+
+node urlcrawler.js --name=bbcnews --url=https://www.bbc.co.uk/news
