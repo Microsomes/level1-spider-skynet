@@ -64,7 +64,7 @@ async function cleanUpURLCollection(collectionOfUrls) {
 async function scrapeUrls(url) {
   return new Promise(async (resolve, reject) => {
     try{
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'],headless: true });
     // const browser= await puppeteer.connect({
     //   browserWSEndpoint:"wss://chrome.browserless.io/",
     // })
