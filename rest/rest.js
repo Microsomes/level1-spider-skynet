@@ -32,7 +32,8 @@ app.get("/results",(req,res,next)=>{
 app.get("/",(req,res,next)=>{
     res.status(200).json({
         status:"OK",
-        msg:"Welcome to level 1 spider api"
+        msg:"Welcome to level 1 spider api",
+        active:"Currently we are only scraping 3 websites to test the service but scraper1 will soon be able to handle 100s of links",
     })
 })
 
