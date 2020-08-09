@@ -39,11 +39,11 @@
       }
     },
     {
-      "name": "Scrape Yahoo NEWS-UK",
+      "name": "Scrape Sky News-UK",
       "script": "urlcrawler.js",
       "args": [
-        "--name=Yahoo NEWS",
-        "--url=https://uk.news.yahoo.com/"
+        "--name=Sky News",
+        "--url=https://news.sky.com/uk"
       ],
       "node_args": "--harmony",
       "merge_logs": true,
