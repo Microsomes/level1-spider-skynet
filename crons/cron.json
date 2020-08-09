@@ -1,0 +1,61 @@
+{
+  "apps": [
+    {
+      "name": "Scrape Liveuamap-ALL",
+      "script": "urlcrawler.js",
+      "args": [
+        "--name=Liveuamap",
+        "--url=https://liveuamap.com/"
+      ],
+      "node_args": "--harmony",
+      "merge_logs": true,
+      "instances": 1,
+      "exec_mode": "fork",
+      "cron_restart": "*/5 * * * *",
+      "watch": false,
+      "autorestart": false,
+      "cwd": "../urlscrapper/",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "Scrape BBC NEWS-UK",
+      "script": "urlcrawler.js",
+      "args": [
+        "--name=BBC NEWS",
+        "--url=https://www.bbc.co.uk/news"
+      ],
+      "node_args": "--harmony",
+      "merge_logs": true,
+      "instances": 1,
+      "exec_mode": "fork",
+      "cron_restart": "*/5 * * * *",
+      "watch": false,
+      "autorestart": false,
+      "cwd": "../urlscrapper/",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "Scrape Yahoo NEWS-UK",
+      "script": "urlcrawler.js",
+      "args": [
+        "--name=Yahoo NEWS",
+        "--url=https://uk.news.yahoo.com/"
+      ],
+      "node_args": "--harmony",
+      "merge_logs": true,
+      "instances": 1,
+      "exec_mode": "fork",
+      "cron_restart": "*/5 * * * *",
+      "watch": false,
+      "autorestart": false,
+      "cwd": "../urlscrapper/",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}

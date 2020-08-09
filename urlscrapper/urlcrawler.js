@@ -20,6 +20,7 @@ if(name==undefined){
 
 
 (async () => {
+  try{
   var currentDate= moment().format('MMMM Do YYYY, h:mm:ss a'); // August 8th 2020, 5:32:43 pm
   var unix= moment().unix();
   console.log(currentDate);
@@ -31,6 +32,9 @@ if(name==undefined){
   }
   var humanDate=""
   fs.writeFile(`results/${name}/urls_${unix}.json`, JSON.stringify(cleanedCollection, null, 2), (err) => { });
+}catch(e){
+  console.log("something went wrong ill write a log on "+name);
+}
 })()
 
 
@@ -50,10 +54,12 @@ async function cleanUpURLCollection(collectionOfUrls) {
 
 async function scrapeUrls(url) {
   return new Promise(async (resolve, reject) => {
+    try{
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.goto(url);
-    await page.waitFor(1000);
+    //await page.waitFor(1000);
+    await page.waitForNavigation();
     //set 1 second wait time
     var urlsr = await page.evaluate(() => {
       var urls = document.querySelectorAll("a");
@@ -66,5 +72,8 @@ async function scrapeUrls(url) {
     })
     await browser.close();
     resolve(urlsr)
+  }catch(e){
+    reject(e);
+  }
   })
 }
