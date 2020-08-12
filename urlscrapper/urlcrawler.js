@@ -2,6 +2,11 @@ const puppeteer = require('puppeteer');
 const fs = require("fs");
 const moment= require("moment");
 
+var browser=null;
+//global browser
+
+var lastTab=null;
+
 try{
 var url = process.argv[3].split("=")[1];
 var name = process.argv[2].split("=")[1];
@@ -39,7 +44,28 @@ if(name==undefined){
     date:moment().unix(),
     links:cleanedCollection
   }
-  fs.writeFile(`results/${name}/urls_${unix}.json`, JSON.stringify(completedData, null, 2), (err) => { });
+
+
+
+
+  var totalLinks=cleanedCollection.length;
+
+  for(var i=0;i<totalLinks;i++){
+    const curLink= cleanedCollection[i];
+
+    var lv2collectionOfUrls = await scrapeUrls(curLink);
+    console.log(lv2collectionOfUrls);
+
+    
+  }
+
+  
+    // for(var linki=0;cleanedCollection.length;linki++){
+    //   const curLink= cleanedCollection[linki];
+    //   console.log(curLink);
+    // }
+   // fs.writeFile(`results/${name}/urls_${unix}.json`, JSON.stringify(completedData, null, 2), (err) => { });
+
 }catch(e){
   console.log("something went wrong ill write a log on "+name);
 
@@ -64,11 +90,23 @@ async function cleanUpURLCollection(collectionOfUrls) {
 async function scrapeUrls(url) {
   return new Promise(async (resolve, reject) => {
     try{
-    const browser = await puppeteer.launch({ args: ['--no-sandbox'],headless: true });
-    // const browser= await puppeteer.connect({
-    //   browserWSEndpoint:"wss://chrome.browserless.io/",
-    // })
-    const page = await browser.newPage();
+      if(browser==null){
+     //browser = await puppeteer.launch({ args: ['--no-sandbox'],headless: false });
+     browser= await puppeteer.connect({
+      browserWSEndpoint:"wss://chrome.browserless.io/",
+    })
+      }
+    
+      if(lastTab==null){
+        lastTab= await browser.newPage();
+      }else{
+       await lastTab.close();
+       lastTab= await browser.newPage();
+
+      }
+
+
+    const page = lastTab
     await page.goto(url);
     await page.waitFor(3000);
     //await page.waitForNavigation();
@@ -85,8 +123,7 @@ async function scrapeUrls(url) {
       })
       return toSend;
     })
-    await browser.close();
-    resolve(urlsr)
+     resolve(urlsr)
   }catch(e){
     reject(e);
   }
