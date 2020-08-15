@@ -3,3 +3,7 @@ node urlcrawler.js --name=liveuamap_test --url=https://liveuamap.com/
 node urlcrawler.js --name=bbcnews_test --url=https://www.bbc.co.uk/news
 
 node urlcrawler.js --name=yahoo_test --url=https://uk.news.yahoo.com/
+
+
+node urlcrawler.js --name=sky --url=https://news.sky.com/uk
+

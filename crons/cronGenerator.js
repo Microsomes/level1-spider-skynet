@@ -45,7 +45,7 @@ var template={
             "merge_logs": true,
             "instances": 1,
             "exec_mode": "fork",
-            "cron_restart": "*/5 * * * *",
+            "cron_restart": "00 59 * * * *",
             "watch": false,
             "autorestart": false,
             "cwd": "../urlscrapper/",

@@ -30,6 +30,49 @@ if(name==undefined){
   var unix= moment().unix();
   console.log(currentDate);
   console.log(unix);
+
+  //we will check if theirs a verified list for this name, IF SO USE IT as it is better then
+  //simply scraping 1 web link
+  if(fs.existsSync("../process/verifiedDataScrapeLinks/"+name+"_verified.json")){
+    console.log("cancel scraping normal mode and use the verified list instead");
+
+
+    var linksToScrape= JSON.parse(fs.readFileSync("../process/verifiedDataScrapeLinks/"+name+"_verified.json"));
+
+
+    var result=[]
+
+    var completedData={
+      name:name,
+      url:url,
+      version:1,
+      date:moment().unix(),
+      links:[]  
+    }
+
+    for(var linki=0;linki< linksToScrape.length;linki++){
+      const curLink= linksToScrape[linki];
+      var collectionOfUrls = await scrapeUrls(curLink);
+      var cleanedCollection = await cleanUpURLCollection(collectionOfUrls);
+      console.log("scrappppppppppppppppppped------------------"+curLink)
+      result.push(...cleanedCollection);
+    }
+
+    completedData.links=result;
+
+    if (!fs.existsSync(`results/${name}`)) {
+      fs.mkdirSync(`results/${name}`);
+    }
+
+    fs.writeFileSync(`results/${name}/urls_${unix}.json`, JSON.stringify(completedData, null, 2), (err) => {
+
+      console.log(err);
+     });
+
+
+
+  }else{
+
   var collectionOfUrls = await scrapeUrls(url);
   var cleanedCollection = await cleanUpURLCollection(collectionOfUrls);
   if (!fs.existsSync(`results/${name}`)) {
@@ -42,7 +85,7 @@ if(name==undefined){
     url:url,
     version:1,
     date:moment().unix(),
-    links:cleanedCollection
+    links:cleanedCollection  
   }
 
 
@@ -50,26 +93,43 @@ if(name==undefined){
 
   var totalLinks=cleanedCollection.length;
 
-  for(var i=0;i<totalLinks;i++){
-    const curLink= cleanedCollection[i];
 
-    var lv2collectionOfUrls = await scrapeUrls(curLink);
-    console.log(lv2collectionOfUrls);
+
+
+
+
+  // for(var i=0;i<totalLinks;i++){
+  //   console.log("scrapping innner-----------------------",name);
+  //   const curLink= cleanedCollection[i];
+  //   var lv2collectionOfUrls = await scrapeUrls(curLink);
+  //   console.log(lv2collectionOfUrls);
+  //   completedData.links.push(...lv2collectionOfUrls);
+  // }
+
+  // completedData.links= Array.from(new Set(completedData.links));
+
+  await browser.close();
+  console.log("browser closed");
+
+ 
+   
+
 
     
-  }
-
-  
-    // for(var linki=0;cleanedCollection.length;linki++){
-    //   const curLink= cleanedCollection[linki];
-    //   console.log(curLink);
-    // }
-   // fs.writeFile(`results/${name}/urls_${unix}.json`, JSON.stringify(completedData, null, 2), (err) => { });
+   fs.writeFile(`results/${name}/urls_${unix}.json`, JSON.stringify(completedData, null, 2), (err) => { });
+}
 
 }catch(e){
   console.log("something went wrong ill write a log on "+name);
 
   console.log(e);
+
+}finally{
+  if(browser==null){
+
+  }else{
+  await browser.close();
+  }
 }
 })()
 
@@ -91,10 +151,17 @@ async function scrapeUrls(url) {
   return new Promise(async (resolve, reject) => {
     try{
       if(browser==null){
-     //browser = await puppeteer.launch({ args: ['--no-sandbox'],headless: false });
-     browser= await puppeteer.connect({
-      browserWSEndpoint:"wss://chrome.browserless.io/",
-    })
+        console.log("no");
+     browser = await puppeteer.launch({ args: ['--no-sandbox'],headless: false,userDataDir:"dir" });
+    //  browser= await puppeteer.connect({
+    //   browserWSEndpoint:"---",
+    // })
+      }else{
+        //browser = await puppeteer.launch({ args: ['--no-sandbox'],headless: false });
+        //lets reopen the browser because its null
+        // browser= await puppeteer.connect({
+        //   browserWSEndpoint:"----",
+        // })
       }
     
       if(lastTab==null){
