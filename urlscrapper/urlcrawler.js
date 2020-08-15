@@ -152,7 +152,7 @@ async function scrapeUrls(url) {
     try{
       if(browser==null){
         console.log("no");
-     browser = await puppeteer.launch({ args: ['--no-sandbox'],headless: false,userDataDir:"dir" });
+     browser = await puppeteer.launch({ args: ['--no-sandbox'],headless: true,userDataDir:"dir" });
     //  browser= await puppeteer.connect({
     //   browserWSEndpoint:"---",
     // })
