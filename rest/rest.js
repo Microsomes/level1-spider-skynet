@@ -14,11 +14,15 @@ app.get("/results",(req,res,next)=>{
    for(var i=0;i<files.length;i++){
         const current= files[i];
         const curname= current.split(".json")[0];
-        links[curname]=[];
+        links[curname]={};
+        links[curname]['links']=[];
+        var totalLinks=0;
         const curJson= JSON.parse(fs.readFileSync("../process/results/"+current).toString());
         curJson.forEach(link => {
-            links[curname].push(link);
-        });        
+            totalLinks++;
+            links[curname]['links'].push(link);
+        });  
+        links[curname]['total']=totalLinks;      
    }
 
 
